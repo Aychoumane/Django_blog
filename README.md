@@ -28,5 +28,5 @@ L'onglet ChatBot, permet de pouvoir discuter avec une IA. Il y a une entrée de 
 Une fois le message entré, il suffit de cliquer sur le bouton envoyer pour interroger l'api d'openAI. Le chat va permettre de visualiser l'échange des messages avec l'API.
 La clé utilisé ne possède plus de crédit, permettant l'échange avec l'API. Dans le cas d'une erreur dans le questionnement de l'API, un message dans le chat est directement retourné avec le message de l'erreur ainsi que son type. Comme dans la page de la création d'article, dans le coin haut gauche, il y a un bouton "<--" indiquant un retour la page principale.
 
-
+La présentation est terminé, amusez-vous bien ! 
   
