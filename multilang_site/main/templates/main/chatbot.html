@@ -1,0 +1,110 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="UTF-8">
+    <title>Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 20px;
+            color: #333;
+        }
+        .chat-container {
+            max-width: 600px;
+            margin: 50px auto 0;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .message {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .user-message {
+            background-color: #d1e7dd;
+            text-align: right;
+        }
+        .bot-message {
+            background-color: #f8d7da;
+        }
+        h1 {
+            text-align: center;
+            font-family: fantasy;
+            margin-bottom: 20px;
+            width: 100%;
+            font-size: 3.5em; 
+            color: black; 
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+        }
+        #user-input {
+            width: calc(100% - 90px);
+            padding: 10px;
+            font-size: 14px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px 15px;
+            margin-top: 10px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: #fff;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Bouton retour à la page précédente -->
+    <button onclick="window.location.href='{% url 'article_list' %}'"><--</button>
+    <h1>ChatBot</h1>
+
+    <div class="chat-container">
+        <div id="chat-log"></div>
+        <input type="text" id="user-input" placeholder="{% trans 'Tapez votre message ici...' %}" />
+        <button onclick="sendMessage()">{% trans 'Envoyer' %}</button>
+    </div>
+
+    <script>
+        async function sendMessage() {
+            const userInput = document.getElementById('user-input');
+            const message = userInput.value;
+            if (message.trim() === '') return;
+
+            appendMessage('user-message', message);
+            userInput.value = '';
+
+            const response = await fetch('/chatbot/response/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ message: message })
+            });
+            const data = await response.json();
+            appendMessage('bot-message', data.message);
+        }
+
+        function appendMessage(className, message) {
+            const chatLog = document.getElementById('chat-log');
+            const messageElement = document.createElement('div');
+            messageElement.className = 'message ' + className;
+            messageElement.textContent = message;
+            chatLog.appendChild(messageElement);
+        }
+    </script>
+</body>
+</html>

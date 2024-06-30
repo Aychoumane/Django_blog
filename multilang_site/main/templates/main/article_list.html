@@ -1,0 +1,126 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{% trans "Blog" %}</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f0f8ff;
+            color: #333;
+        }
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        nav ul li {
+            display: inline;
+        }
+        nav ul li a {
+            text-decoration: none;
+            padding: 10px 15px;
+            border: 1px solid gray;
+            border-radius: 5px;
+            color: #fff;
+            background-color: #007BFF;
+            transition: background-color 0.3s ease;
+        }
+        nav ul li a:hover {
+            background-color: #0056b3;
+        }
+        .article {
+            border: 2px solid #ccc;
+            padding: 20px;
+            margin: 20px auto;
+            width: 80%;
+            max-width: 600px;
+            box-sizing: border-box;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .article h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .article .content {
+            margin-top: 10px;
+        }
+        .article .date {
+            font-size: 14px;
+            color: #666;
+            margin-top: 15px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            width: 100%;
+            font-size: 3.5em; /* Taille de police plus grande */
+            color: black; /* Couleur bleu foncé */
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Ombre de texte */
+            margin-bottom: 20px;
+            font-family: 'Arial Black', Gadget, sans-serif; /* Police plus épaisse */
+        }
+        form {
+            display: flex;
+            justify-content: left;
+            margin-bottom: 20px;
+        }
+        form select {
+            border-radius: 4px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Formulaire de sélection de langue -->
+    <form action="{% url 'set_language' %}" method="get">
+        <select name="language" onchange="this.form.submit()">
+            <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
+            <option value="fr" {% if LANGUAGE_CODE == 'fr' %}selected{% endif %}>Français</option>
+            <!-- Ajoutez d'autres langues ici -->
+        </select>
+    </form>
+
+    <h1>{% trans "B l o g" %}</h1>
+
+    <!-- Bouton de navigation -->
+    <nav>
+        <ul>
+            <li><a href="{% url 'create_article' %}">{% trans "Créer un article" %}</a></li>
+            <li><a href="{% url 'chatbot_view' %}">{% trans "Chatbot" %}</a></li>
+        </ul>
+    </nav>
+
+    <!-- Liste des articles -->
+    <ul>
+        {% for article in articles %}
+            <li class="article">
+                <h2>{{ article.title }}</h2>
+                <div class="content">
+                    <p>{{ article.content }}</p>
+                </div>
+                <div class="date">
+                    {% trans "Date de publication:" %} {{ article.publication_date }}
+                </div>
+            </li>
+        {% empty %}
+            <li class="article">{% trans "Aucun article disponible pour le moment." %}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

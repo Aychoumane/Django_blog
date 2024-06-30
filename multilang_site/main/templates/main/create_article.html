@@ -1,0 +1,89 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{% trans "Créer un article" %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff; 
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            width: 100%;
+        }
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #fff;
+        }
+        .form-field {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        #register_button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #register_button:hover {
+            background-color: #45a049;
+        }
+        #back_button {
+            padding: 10px 15px;
+            margin-top: 10px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: #fff;
+            cursor: pointer;
+        }
+        #back_button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Bouton retour à la page précédente -->
+    <button id= "back_button" onclick="window.location.href='{% url 'article_list' %}'"><--</button>
+
+    <h1>{% trans "Créer un article" %}</h1>
+    
+    <!-- Appel au template dans le fichier forms.py -->
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button id ="register_button" type="submit">{% trans "Enregistrer" %}</button>
+    </form>
+    <!-- Script pour définir la date actuelle -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var dateInput = document.querySelector('input[type="date"]');
+            if (!dateInput.value) {
+                var today = new Date().toISOString().split('T')[0];
+                dateInput.value = today;
+            }
+        });
+    </script>
+</body>
+</html>
